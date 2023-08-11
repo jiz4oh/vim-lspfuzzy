@@ -3,6 +3,8 @@
 This plugin makes the [vim-lsp](https://github.com/prabirshrestha/vim-lsp) client use
 [FZF](https://github.com/junegunn/fzf) to display results and navigate the code.
 
+![FzfLspDocumentSymbol](https://cdn.jsdelivr.net/gh/jiz4oh/backups@master/img/2023/08/upgit_20230811_1691723093.gif)
+
 ## Installation
 
 If you don't have a preferred installation method, I recommend install [vim-plug](https://github.com/junegunn/vim-plug), and then add following codes.
