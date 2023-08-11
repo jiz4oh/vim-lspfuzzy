@@ -116,7 +116,11 @@ function! s:fzf(label, list, ctx) abort
 
   if exists('g:loaded_fzf_vim')
     if type(g:lspfuzzy_preview) == type([])
-      let l:spec = fzf#vim#with_preview(l:spec, g:lspfuzzy_preview[0], g:lspfuzzy_preview[1])
+      if len(g:lspfuzzy_preview) == 2
+        let l:spec = fzf#vim#with_preview(l:spec, g:lspfuzzy_preview[0], g:lspfuzzy_preview[1])
+      elseif len(g:lspfuzzy_preview) == 1
+        let l:spec = fzf#vim#with_preview(l:spec, g:lspfuzzy_preview[0])
+      endif
     else
       let l:spec = fzf#vim#with_preview(l:spec, g:lspfuzzy_preview)
     endif

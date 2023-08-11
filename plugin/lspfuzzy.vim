@@ -24,8 +24,8 @@ if !get(g:, 'lspfuzzy_no_default', 0)
   command! -nargs=? -bang FzfLspReferences      call fzf#lsp#references(<bang>0)
 endif
 
-if !get(g:, 'lspfuzzy_preview')
-  let g:lspfuzzy_preview = get(g:, 'fzf_preview_window', ['+{2}-/2'])
+if !exists('g:lspfuzzy_preview')
+  let g:lspfuzzy_preview = get(g:, 'fzf_preview_window', ['down:+{2}-/2'])
 endif
 
 if !get(g:, 'lspfuzzy_action')
