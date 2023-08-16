@@ -67,15 +67,11 @@ function! s:sink(lines)
 
   let l:first = l:list[0]
   try
-    if type(l:Cmd) == type(function('call'))
-      return Cmd(l:list)
-    end
-
     if stridx('edit', l:Cmd) == 0 && fnamemodify(l:first.filename, ':p') ==# expand('%:p')
       normal! m'
-      return
+    else
+      execute l:Cmd l:first.filename
     endif
-    execute l:Cmd l:first.filename
     execute l:first.lnum
     call cursor(0, l:first.col)
     normal! zvzz
