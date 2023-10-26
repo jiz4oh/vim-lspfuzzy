@@ -21,7 +21,7 @@ if !get(g:, 'lspfuzzy_no_default', 0)
   command! -nargs=? -bang FzfLspDeclaration     call fzf#lsp#declaration(<bang>0)
   command! -nargs=? -bang FzfLspTypeDefinition  call fzf#lsp#type_definition(<bang>0)
   command! -nargs=? -bang FzfLspImplementation  call fzf#lsp#implementation(<bang>0)
-  command! -nargs=? -bang FzfLspReferences      call fzf#lsp#references(<bang>0)
+  command! -nargs=? -bang FzfLspReferences      call fzf#lsp#references(<bang>0, {})
 endif
 
 if !exists('g:lspfuzzy_preview')

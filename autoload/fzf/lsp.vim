@@ -234,8 +234,11 @@ function! fzf#lsp#definition(fullscreen, ...) abort
     call s:list_location('definition', l:ctx)
 endfunction
 
-function! fzf#lsp#references(fullscreen) abort
+function! fzf#lsp#references(fullscreen, ...) abort
     let l:ctx = { 'fullscreen': a:fullscreen, 'jump_if_one': 0 }
+    if a:0 && type(a:1) == type({})
+      let l:ctx = extend(l:ctx, a:1)
+    endif
     let l:request_params = { 'context': { 'includeDeclaration': v:false } }
     call s:list_location('references', l:ctx, l:request_params)
 endfunction
