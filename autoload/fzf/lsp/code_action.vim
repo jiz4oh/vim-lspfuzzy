@@ -16,14 +16,16 @@ endfunction
 
 "
 " @param option = {
-"   selection: v:true | v:false = Provide by CommandLine like `:'<,'>LspCodeAction`
-"   sync: v:true | v:false      = Specify enable synchronous request. Example use case is `BufWritePre`
-"   query: string               = Specify code action kind query. If query provided and then filtered code action is only one, invoke code action immediately.
+"   selection: v:true | v:false   = Provide by CommandLine like `:'<,'>LspCodeAction`
+"   sync: v:true | v:false        = Specify enable synchronous request. Example use case is `BufWritePre`
+"   query: string                 = Specify code action kind query. If query provided and then filtered code action is only one, invoke code action immediately.
+"   fullscreen: v:true | v:false  = Specify if open fzf window fullscreen
 " }
 "
 function! fzf#lsp#code_action#do(option) abort
     let l:selection = get(a:option, 'selection', v:false)
     let l:sync = get(a:option, 'sync', v:false)
+    let l:fullscreen = get(a:option, 'fullscreen', v:false)
     let l:query = get(a:option, 'query', '')
 
     let l:server_names = filter(lsp#get_allowed_servers(), 'lsp#capabilities#has_code_action_provider(v:val)')
@@ -40,6 +42,7 @@ function! fzf#lsp#code_action#do(option) abort
     let l:ctx = {
     \ 'count': len(l:server_names),
     \ 'results': [],
+    \ 'fullscreen': l:fullscreen
     \}
     let l:bufnr = bufnr('%')
     let l:command_id = lsp#_new_command()

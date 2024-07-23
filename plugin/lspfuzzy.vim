@@ -22,10 +22,10 @@ if !get(g:, 'lspfuzzy_no_default', 0)
   command! -nargs=? -bang FzfLspTypeDefinition  call fzf#lsp#type_definition(<bang>0)
   command! -nargs=? -bang FzfLspImplementation  call fzf#lsp#implementation(<bang>0)
   command! -nargs=? -bang FzfLspReferences      call fzf#lsp#references(<bang>0, {})
-  command! -range -nargs=* -complete=customlist,fzf#lsp#code_action#complete FzfLspCodeAction call fzf#lsp#code_action#do(
-              \ { 'sync': v:false, 'selection': <range> != 0, 'query': <q-args> })
-  command! -range -nargs=* -complete=customlist,fzf#lsp#code_action#complete FzfLspCodeActionSync call fzf#lsp#code_action#do(
-              \ { 'sync': v:true, 'selection': <range> != 0, 'query': <q-args> })
+  command! -range -nargs=* -bang -complete=customlist,fzf#lsp#code_action#complete FzfLspCodeAction call fzf#lsp#code_action#do(
+              \ { 'fullscreen': <bang>0, 'sync': v:false, 'selection': <range> != 0, 'query': <q-args> })
+  command! -range -nargs=* -bang -complete=customlist,fzf#lsp#code_action#complete FzfLspCodeActionSync call fzf#lsp#code_action#do(
+              \ { 'fullscreen': <bang>0, 'sync': v:true, 'selection': <range> != 0, 'query': <q-args> })
 endif
 
 if !exists('g:lspfuzzy_preview')
