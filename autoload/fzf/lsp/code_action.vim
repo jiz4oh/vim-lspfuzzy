@@ -1,4 +1,9 @@
 " vint: -ProhibitUnusedVariable
+let s:ansi = {
+  \'reset': nr2char(0x001b). '[0m',
+  \'red': nr2char(0x001b). '[31m',
+  \'purple': nr2char(0x001b). '[35m'
+  \}
 
 function! fzf#lsp#code_action#complete(input, command, len) abort
     let l:server_names = filter(lsp#get_allowed_servers(), 'lsp#capabilities#has_code_action_provider(v:val)')
@@ -121,12 +126,12 @@ function! s:handle_code_action(ctx, server_name, command_id, sync, query, bufnr,
         return
     endif
 
-    let l:list = mapnew(l:total_code_actions, 's:format_entry(v:val)')
+    let l:list = mapnew(l:total_code_actions, 's:format_entry(v:val, 1)')
     call s:fzf('Code actions', l:list, { lines -> s:accept_code_action(0, a:bufnr, copy(l:total_code_actions), lines[1]) }, a:ctx)
 endfunction
 
 function! s:accept_code_action(sync, bufnr, actions, line, ...) abort
-    let l:item = filter(a:actions, { idx, val -> a:line == s:format_entry(val)})[0]
+    let l:item = filter(a:actions, { idx, val -> a:line == s:format_entry(val, 0)})[0]
     if s:handle_disabled_action(l:item) | return | endif
     call s:handle_one_code_action(l:item['server_name'], a:sync, a:bufnr, l:item['code_action'])
 endfunction
@@ -192,10 +197,22 @@ endfunction
 "   'server_name': string,
 "   'code_action': map,
 " }
-function! s:format_entry(val) abort
-  let l:title = printf('[%s] %s', a:val['server_name'], a:val['code_action']['title'])
+function! s:format_entry(val, ansi) abort
+  if a:ansi
+    let l:server_name = s:ansi.purple . a:val['server_name'] . s:ansi.reset
+  else
+    let l:server_name = a:val['server_name']
+  endif
+  let l:title = a:val['code_action']['title']
+  let l:title = printf('[%s] %s', l:server_name, l:title)
+
   if has_key(a:val['code_action'], 'kind') && a:val['code_action']['kind'] !=# ''
-      let l:title .= ' (' . a:val['code_action']['kind'] . ')'
+      if a:ansi
+        let l:kind = s:ansi.red . a:val['code_action']['kind'] . s:ansi.reset
+      else
+        let l:kind = a:val['code_action']['kind']
+      endif
+      let l:title = printf('%s (%s)', l:title, l:kind)
   endif
 
   return l:title
