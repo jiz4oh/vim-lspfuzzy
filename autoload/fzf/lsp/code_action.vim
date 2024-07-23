@@ -127,11 +127,12 @@ function! s:handle_code_action(ctx, server_name, command_id, sync, query, bufnr,
     endif
 
     let l:list = mapnew(l:total_code_actions, 's:format_entry(v:val, 1)')
-    call s:fzf('Code actions', l:list, { lines -> s:accept_code_action(0, a:bufnr, copy(l:total_code_actions), lines[1]) }, a:ctx)
+    call s:fzf('Code actions', l:list, { lines -> s:accept_code_action(0, a:bufnr, copy(l:total_code_actions), lines) }, a:ctx)
 endfunction
 
-function! s:accept_code_action(sync, bufnr, actions, line, ...) abort
-    let l:item = filter(a:actions, { idx, val -> a:line == s:format_entry(val, 0)})[0]
+function! s:accept_code_action(sync, bufnr, actions, lines, ...) abort
+    let l:line = a:lines[0]
+    let l:item = filter(a:actions, { idx, val -> l:line == s:format_entry(val, 0)})[0]
     if s:handle_disabled_action(l:item) | return | endif
     call s:handle_one_code_action(l:item['server_name'], a:sync, a:bufnr, l:item['code_action'])
 endfunction
@@ -176,10 +177,8 @@ function! s:fzf(label, list, callback, ctx) abort
   let l:fullscreen = get(a:ctx, 'fullscreen', 0)
   let l:query = get(a:ctx, 'query', '')
 
-  let l:actions = get(g:, 'fzf_action', g:lspfuzzy_action)
   let l:prompt = a:label. '> '
   let l:opts = [
-                \'--expect', join(keys(l:actions), ','),
                 \'--ansi',
                 \'--prompt', l:prompt,
                 \]
