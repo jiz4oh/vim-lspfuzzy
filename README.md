@@ -55,6 +55,8 @@ respect your settings.
 |`:FzfLspReferences`|textDocument/references | Find references |
 |`:FzfLspTypeDefinition`|textDocument/typeDefinition | Go to the type definition of the word under the cursor, and open in the current window |
 |`:FzfLspWorkspaceSymbol`|workspace/symbol | Search/Show workspace symbol |
+|`:FzfLspCodeAction`|textDocument/codeAction| Find available code actions |
+|`:FzfLspCodeActionSync`|textDocument/codeAction| Find available code actions and execute synchronously |
 
 ## Troubleshooting
 
