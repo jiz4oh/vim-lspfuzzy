@@ -130,7 +130,7 @@ function! s:handle_code_action(ctx, server_name, command_id, sync, query, bufnr,
     endif
 
     let l:list = mapnew(l:total_code_actions, 's:format_entry(v:val, 1)')
-    call s:fzf('Code actions', l:list, { lines -> s:accept_code_action(0, a:bufnr, copy(l:total_code_actions), lines) }, a:ctx)
+    call s:fzf('Code actions', l:list, { lines -> s:accept_code_action(a:sync, a:bufnr, copy(l:total_code_actions), lines) }, a:ctx)
 endfunction
 
 function! s:accept_code_action(sync, bufnr, actions, lines, ...) abort
